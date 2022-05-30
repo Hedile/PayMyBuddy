@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<title>Pay my buddy</title>
+</head>
+<body>
+ <h2 class="h2">Liste des utilisateurs</h2>
+ <table>
+            <thead>
+                <tr>
+                    <th>Prénom</th>
+                    <th>Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${users.empty}">
+                    <td colspan="3">Aucun utilisateur en base de données</td>
+                </tr>
+                <tr th:each="user: ${users}">
+                    <td><span th:text="${user.firstName}"> Prénom </span></td>
+                    <td><span th:text="${user.lastName}"> Nom </span></td>
+                </tr>
+            </tbody>
+        </table>
+</body>
+</html>

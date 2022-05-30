@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
+    <title>Register - PayMyBuddy</title>
+     <link rel="stylesheet" href="../static/css/bootstrap.min.css"
+     						th:href="@{css/bootstrap.min.css}" type="text/css">
+    <link href="/css/auth.css" rel="stylesheet" type="text/css">
+   
+</head>
+<body>
+<div id="login">
+    <form class="form-signin text-center" method="post" th:action="@{/user/register}" th:object="${user}">
+        <h1 class="h3 mb-5 mt-3 font-weight-normal" style="text-align: center"> PayMyBuddy</h1>
+
+        <div th:if="${param.error}">
+            <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+        </div>
+        
+
+        <div th:if="${param.account_already_exists}">
+            <p class="text-danger">The email is already taken, you must login with this email or create another account
+                with a different email.</p>
+        </div>
+
+
+        <input  class="form-control mb-3" id="inputfirstName" maxlength="16" minlength="2"
+               name="firstName" placeholder="Firstname" required  th:field="*{firstName}" type="text" autofocus>
+        <input class="form-control mb-3" id="inputlastName" maxlength="45" minlength="2" name="lastName"
+               placeholder="Lastname" th:field="*{lastName}" type="text"required >
+        <input class="form-control mb-3" id="inputEmail" name="email" placeholder="Email address" 
+               th:field="*{email}" type="email"required >
+        
+        <input class="form-control mb-3" id="inputPassword" maxlength="255" minlength="5" name="password"
+               placeholder="Password"  th:field="*{password}" type="password" required>
+      
+               <input class="form-control mb-3" id="inputBalance" name="balance" placeholder="Balance " 
+               th:field="*{balance}" type="decimal" required >
+        
+        <button class="btn btn-success btn-block" type="submit"><i class="fas fa-sign-in-alt"></i>Sign up</button>
+    </form>
+    <div class="text-center">
+        <button class="btn btn-primary btn-block m-3" id="btn-signup" type="button">
+            <a th:href="@{/login}">
+                <i class="fas fa-user-plus"></i>login
+            </a>
+        </button>
+    </div>
+
+   </div>
+
+</body>
+</html>

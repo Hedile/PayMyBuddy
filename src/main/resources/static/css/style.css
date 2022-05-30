@@ -1,0 +1,112 @@
+
+body, html{
+	padding: 0;
+	margin: 0;
+}
+body{
+	font-family: 'Raleway', sans-serif;
+	
+
+
+}
+
+a, a:hover{
+	text-decoration: none;
+}
+.container-fluid{
+	padding:  0;
+}
+/* header */
+.header{
+	background-color: #F4F4F5;
+	height: 70px;
+	line-height: 70px;
+}
+
+.logo{
+	 background-color: #4CAF50;
+	color: #ffffff;
+	text-transform: bold;
+	letter-spacing: 1px;
+	float: left;
+}
+
+.menu {
+   float: right;
+}
+
+.menu a {
+	text-transform: bold;
+	color: #000000;
+	margin-right: 15px;
+}
+
+.menu a:hover {
+	color: #C833FF;
+}
+
+
+/* sous Header*/
+.sous-header{
+	background-color: #00ff00;
+	height: 70px;
+}
+#sousnav {
+	text-align: left;
+}
+/* bannière */
+.banner {
+	width: 100%;
+	max-width: 100%;
+}
+.ban {
+	width: 100%;
+	max-width: 100%;
+	position: relative; 
+}
+.ban img {
+	width: 100%;
+	max-width: 100%;
+}
+.inner-banner {
+	position: absolute;
+	top:  30%;
+	width: 100%;
+	text-align: center;
+}
+.inner-banner h1{
+	color: #25B5FA;
+	font-weight: bold;
+	font-size: 50px;
+	text-shadow: 1px 1px 20px #65FF77;
+}
+/* about */
+.form-contact{
+	width: 500px;
+	display: block;
+	margin: 0 auto;
+}
+input {
+	margin-bottom: 20px;
+}
+input[type=text]{
+	height: 50px;
+	width: 500px;
+
+}
+input[type=email]{
+	height: 50px;
+	width: 500px;
+	
+}
+textarea {
+	width: 500px;
+	height: 200px;
+	resize: vertical;
+}
+.bn-custom{
+	background-color:#41FF39 ;
+	color: green ;
+}
+/* portfolio */
+/* contact */

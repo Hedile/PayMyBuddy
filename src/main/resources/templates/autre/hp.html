@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+   <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+      <title th:utext="${title}"></title>
+       <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet"  href="css/style.css">
+    <link href="/css/app.css" rel="stylesheet" type="text/css">
+   
+   </head>
+   
+   <body>
+   <header class ="container-fluid header">
+      <div class ="container">
+    <a href ="#" class ="logo"> PayMyBuddy</a>
+    <nav class ="menu">
+			<a th:href="@{/}">Home</a>
+  			<a th:href="@{/login}">Login</a>
+  			 <a th:href="@{/createUser}">Create an account</a>
+		</nav>
+   </div>
+</header>     
+     <section class="container-fluid banner">
+		<div class ="ban">
+			<img src="img/image.png" alt="bannière">
+		</div>
+		<div class = "inner-banner">
+			<h1 th:utext="${message}"></h1>
+				<button class =" btn btn-custom"> Join us ! ! </button>
+		</div>
+</section>
+   </body>
+</html>
+ 
