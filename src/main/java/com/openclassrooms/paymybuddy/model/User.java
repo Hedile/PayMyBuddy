@@ -17,11 +17,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.DynamicUpdate;
+
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@DynamicUpdate
 @Entity
 @Table(name = "user")
 public class User {
@@ -35,7 +37,7 @@ public class User {
 
 	@Column(nullable = false, name = "lastname")
 	private String lastName;
-	
+
 	@Column(nullable = false, unique = true)
 	private String email;
 
@@ -55,10 +57,11 @@ public class User {
 	@OneToMany(mappedBy = "accountUser", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BankAccount> accounts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "sender")
+	@OneToMany(mappedBy = "sender" ,cascade = CascadeType.ALL)
+	
 	private List<Transaction> sentTransactions = new ArrayList<>();
 
-	@OneToMany(mappedBy = "receiver")
+	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
 	private List<Transaction> receiveTransactions = new ArrayList<>();
 
 	

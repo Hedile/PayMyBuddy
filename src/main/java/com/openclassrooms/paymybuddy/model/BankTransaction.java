@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.openclassrooms.paymybuddy.constants.TransactionType;
 @Entity
 @Table(name = "bank_transaction")
 public class BankTransaction {
@@ -19,15 +22,15 @@ public class BankTransaction {
 	@Column(name = "bank_transaction_id")
     private int id;
 	
-    @Column(name = "description")
-    private String description;
-
+   
     @Column(nullable = false)
     private double amount;
 
     @Column(nullable = false)
-    private Date date;
-
+    private LocalDateTime Date;
+ 
+    @Column(name = "type")
+    private TransactionType type;
     @ManyToOne(
 
 			cascade = { 
@@ -54,13 +57,6 @@ public class BankTransaction {
 		this.id = id;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public double getAmount() {
 		return amount;
@@ -70,12 +66,22 @@ public class BankTransaction {
 		this.amount = amount;
 	}
 
-	public Date getDate() {
-		return date;
+	
+
+	public LocalDateTime getDate() {
+		return Date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(LocalDateTime date) {
+		Date = date;
+	}
+
+	public TransactionType getType() {
+		return type;
+	}
+
+	public void setType(TransactionType addToInternalAccount) {
+		this.type = addToInternalAccount;
 	}
 
 }

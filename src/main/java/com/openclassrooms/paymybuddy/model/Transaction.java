@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 
 import javax.persistence.Column;
@@ -9,10 +10,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.openclassrooms.paymybuddy.constants.TransactionType;
 
 
 
@@ -25,11 +29,11 @@ public class Transaction {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="connection_id",insertable=false, updatable=false)
+    @JoinColumn(name="user_sender_id" )
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name="connection_id",insertable=false, updatable=false)
+    @JoinColumn(name="user_receiver_id")
     private User receiver;
     
     @Column(name = "description")
@@ -40,9 +44,10 @@ public class Transaction {
     
   
     @Column(nullable = false)
-    private Date date;
- 
+    private LocalDateTime Date;
 
+    @Column(name = "type")
+    private TransactionType type;
 	public int getId() {
 		return id;
 	}
@@ -83,12 +88,23 @@ public class Transaction {
 		this.amount = amount;
 	}
 
-	public Date getDate() {
-		return date;
+	
+
+	public LocalDateTime getDate() {
+		return Date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(LocalDateTime date) {
+		Date = date;
 	}
-    
+
+	public TransactionType getType() {
+		return type;
+	}
+
+	public void setType(TransactionType type) {
+		this.type = type;
+	}
+
+	
 }

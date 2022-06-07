@@ -57,7 +57,7 @@ public class AuthenticationService {
 	            securityContextLogoutHandler.logout(request, response, auth);
 	        }
 	    }
-	    public User getLoggedUser(HttpServletRequest request) {
+	    public User getCurrentLoggedUser(HttpServletRequest request) {
 	    	HttpSession httpSession= request.getSession();
 	    	SecurityContext securityContext=(SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
 	    	 System.out.println(securityContext);
@@ -65,8 +65,5 @@ public class AuthenticationService {
 	    	 System.out.println("Email: " + email);
 	        return userRepository.findUserByEmail(email);
 	    }
-	    public User getCurrentLoggedUser(HttpServletRequest request) {
-	        return userRepository.findUserByEmail(request.getUserPrincipal().getName());
-	    }
-
+	  
 }

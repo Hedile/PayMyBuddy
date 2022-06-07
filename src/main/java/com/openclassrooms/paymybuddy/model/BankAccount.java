@@ -22,14 +22,17 @@ public class BankAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "bank_account_id")
 	private int bankAccountId;
+	
 	@Column(name = "iban", nullable = false)
 	private String iban;
+	
 	 @OneToMany(mappedBy="account",
   		   cascade = CascadeType.ALL, 
   		   orphanRemoval = true
   		   )
   		   
 	private List<BankTransaction> bankTransactions = new ArrayList<>();
+	 
 	@ManyToOne(fetch = FetchType.EAGER,
 			cascade = { 
 					CascadeType.PERSIST, 
@@ -39,6 +42,15 @@ public class BankAccount {
 	@JoinColumn(name="user_id")
 	private User accountUser;
 	
+	public BankAccount() {
+		super();
+	
+	}
+	public BankAccount(int bankAccountId, String iban) {
+		super();
+		this.bankAccountId = bankAccountId;
+		this.iban = iban;
+	}
 	public List<BankTransaction> getBankTransactions() {
 		return bankTransactions;
 	}

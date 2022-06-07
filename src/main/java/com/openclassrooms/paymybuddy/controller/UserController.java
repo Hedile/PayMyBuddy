@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -36,7 +37,7 @@ public class UserController {
 	
 	   @GetMapping("/")
 	    public String showHomePage(Model model, HttpServletRequest request) {
-	        User user = authenticationService.getLoggedUser(request);
+	        User user = authenticationService.getCurrentLoggedUser(request);
 	        model.addAttribute("user", user);
 	        model.addAttribute("friends", user.getFriends());
 	      
@@ -52,16 +53,11 @@ public class UserController {
 	        return "profile";
 	    }
 
-	    @GetMapping("/home")
-		public String welcomePage(Model model) {
-			model.addAttribute("title", "Pay My Buddy");
-			model.addAttribute("message", " We make moving your money, Easy !!");
-			return "hp";
-		} 
 	    @GetMapping(value = "/contact")
 	    public String showAddFriendPage(Model model, HttpServletRequest request) {
 	        User user = authenticationService.getCurrentLoggedUser(request);
 	        model.addAttribute("friends", user.getFriends());
+	        model.addAttribute("username", user.getFullName());
 	        return "contact";
 	    }
 

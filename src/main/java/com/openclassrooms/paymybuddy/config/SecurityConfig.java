@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
@@ -27,24 +29,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	                .authoritiesByUsernameQuery("select email, password from user where email = ?;"); //SQL query
 	    }
 	  
-	  @Override
-	 protected void configure(HttpSecurity http) throws Exception {
+
+@Override
+ protected void configure(HttpSecurity http) throws Exception {
 	        http.
 	        authorizeRequests()
-	    .antMatchers("/register","/homePage","/user/register").permitAll()
+	   .antMatchers("/register","/user/register").permitAll()
          
 	                .antMatchers("/css/**","/img/**").permitAll()
 	                .anyRequest().authenticated()
 	                .and()
 	                .formLogin()
 	                .loginPage("/login") .permitAll()
-	                .defaultSuccessUrl("/homePage")
+	                .defaultSuccessUrl("/")
 	                .failureUrl("/login?failure=true")
 	                .usernameParameter("email")
 	                .permitAll()
 	                .and().rememberMe();
 	    }
-	 @Bean
+ 
+
+
+@Bean
 		public PasswordEncoder passwordEncoder() {
 		 return new BCryptPasswordEncoder();
 		

@@ -57,7 +57,7 @@ public class UserService {
         }
         friends.add(newFriend);
         currentUser.setFriends(friends);
-        userRepository.save(currentUser);
+       userRepository.save(currentUser);
     }
     
 }

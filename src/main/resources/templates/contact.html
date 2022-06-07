@@ -1,96 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0" name="viewport">
-    <title>Friend - PayMyBuddy</title>
-      <link rel="stylesheet" href="../static/css/bootstrap.min.css"
-     						th:href="@{css/bootstrap.min.css}" type="text/css">
-    <link href="/css/app.css" rel="stylesheet" type="text/css">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+	name="viewport">
+<title>Friend - PayMyBuddy</title>
+<link rel="stylesheet" href="../static/css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" type="text/css">
+<link href="/css/app.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<header class="container-fluid header">
-<div class ="container">
-    
-    	<div  class ="logo"> PayMyBuddy</div>
-		<nav class ="menu">
-			<a   th:href="@{/}"> Home</a>
-			<a  th:href="@{/transaction}"> Transfer</a>
-			<a  th:href="@{/profile}">Profile</a>
-			<a class="active" th:href="@{/contact}"> Contact</a>
-			<a  th:href="@{/logout}"> Log off</a>
-		</nav>
-		
-    </div>
-</header>
-<section class="container-fluid banner">
-	<div class ="ban">
-		<img src="img/image.png" alt="img">
+	<header class="container-fluid header">
+		<div class="container">
+
+			<div class="logo">PayMyBuddy</div>
+			<nav class="menu">
+				<a th:href="@{/}"> Home</a> <a th:href="@{/transaction}">
+					Transfer</a> <a th:href="@{/profile}">Profile</a> <a class="active"
+					th:href="@{/contact}"> Contact</a> <a th:href="@{/logout}"> Log
+					off</a>
+			</nav>
+
+		</div>
+	</header>
+	<div class="container">
+		<div class="main-body mt-4">
+			<div class="col-lg-8">
+				<div class="card">
+					<div class="card-body border border-dark">
+						<div class="d-flex flex-column align-items-center text-center">
+							<img alt="Admin" class="rounded-circle p-1 bg-primary"
+								src="img/prof.png" width="110">
+							<div class="mt-3">
+								<p style="text-transform: uppercase;" th:text="${username}" blod></p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="card">
+						<div class="card-body border border-dark">
+							<div class="row mb-4">
+								<div class="col-m-3">
+									<h3>List friend's</h3>
+								</div>
+							</div>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">Full name</th>
+										<th scope="col">Email</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="friend: ${friends}">
+										<td th:text="${friend.getFullName()}">Full name</td>
+										<td th:text="${friend.getEmail()}">Email</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row mt-4">
+						<div class="col-m-12">
+							<div class="card">
+								<div th:if="${param.error}">
+									<p class="text-danger" th:text="${param.error}"></p>
+								</div>
+								<form th:action="@{/contact/new}" method="get">
+									<div class="card-body border border-dark">
+										<div class="row mb-3">
+											<div class="col-m-3">
+												<h3>Add new friend</h3>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-2">
+												<h6 class="mb-0">friend's email:</h6>
+											</div>
+											<div class="col-sm-10 text-secondary">
+												<input class="form-control" name="friendEmail" required
+													type="email">
+
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-3"></div>
+											<div class="col-sm-9 text-secondary">
+												<button type="submit" class="btn btn-primary px-4">Add
+													friend</button>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	</section>
-<div class="container">
-    <div class="main-body mt-4">
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row mb-4">
-                            <div class="col-m-3">
-                                <h3>List friend's</h3>
-                            </div>
-                        </div>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Full name</th>
-                                <th scope="col">Email</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="friend: ${friends}">
-                                <td th:text="${friend.getFullName()}">Full name</td>
-                                <td th:text="${friend.getEmail()}">Email</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col-m-12">
-                        <div class="card">
-                            <div th:if="${param.error}">
-                                <p class="text-danger" th:text="${param.error}"></p>
-                            </div>
-                            <form th:action="@{/contact/new}" method="get">
-                                <div class="card-body">
-                                    <div class="row mb-3">
-                                        <div class="col-m-3">
-                                            <h3>Add new friend</h3>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-sm-2">
-                                            <h6 class="mb-0">friend's email:</h6>
-                                        </div>
-                                        <div class="col-sm-10 text-secondary">
-                                            <input class="form-control"  name="friendEmail"  required type="email">
-    
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-3"></div>
-                                        <div class="col-sm-9 text-secondary">
-                                            <button type="submit" class="btn btn-primary px-4"  >Add friend</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

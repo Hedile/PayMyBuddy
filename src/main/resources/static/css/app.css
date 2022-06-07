@@ -56,10 +56,23 @@ a, a:hover{
 }
 
 
-.active {
+.menu .active {
     background-color:#52FF4C;
-padding: 9% 10PX;
+padding: 10% 10PX;
 }
+
+.nav a {
+	text-transform: bold;
+	color: #000000;
+	
+}
+
+.nav a:hover {
+	color: #C833FF;
+}
+
+
+
 
 
 .card {

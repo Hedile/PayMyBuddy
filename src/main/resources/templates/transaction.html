@@ -8,37 +8,244 @@
 <link rel="stylesheet" href="../static/css/bootstrap.min.css"
 	th:href="@{css/bootstrap.min.css}" type="text/css">
 <link href="/css/app.css" rel="stylesheet" type="text/css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+	crossorigin="anonymous"></script>
+
 </head>
 <body>
 	<header class="container-fluid header">
 		<div class="container">
-
 			<div class="logo">PayMyBuddy</div>
 			<nav class="menu">
-				<a th:href="@{/}"> Home</a>
-				 <a class="active" th:href="@{/transaction}">Transfer</a> 
-				 <a th:href="@{/profile}">Profile</a>
-				<a th:href="@{/contact}">Contact</a> 
-				<a th:href="@{/logout}">Log off</a>
+				<a th:href="@{/}"> Home</a> <a class="active"
+					th:href="@{/transaction}">Transfer</a> <a th:href="@{/profile}">Profile</a>
+				<a th:href="@{/contact}">Contact</a> <a th:href="@{/logout}">Log
+					off</a>
 			</nav>
-
 		</div>
 	</header>
 
-	<div class="container"></div>
 	<div class="container">
-		<div class="main-body mt-4">
-			<div class="row">
+		<div class="main-body mt-4 ">
+			<div class="row ">
+
+				<div class="col-lg-8">
+					<div class="card">
+						<div class="card-body border border-dark">
+							<div class="d-flex flex-column align-items-center text-center">
+								<img alt="Admin" class="rounded-circle p-1 bg-primary"
+									src="img/prof.png" width="110">
+								<div class="mt-3">
+									<p style="text-transform: uppercase;" th:text="${username}"
+										blod></p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-body border border-dark">
+							<div class="d-flex flex-column align-items-center text-center">
+								<div class="mt-3">
+
+									<h4 th:text="' Your balance: ' + ${balance} + '€'"></h4>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-8">
+				<div class="container mt-5">
+
+					<ul class="nav nav-tabs mt-5 nav-justified ">
+						<li class="nav-item"><a href="#send" class="nav-link active"
+							data-bs-toggle="tab"><h4>Send Money To Friend</h4></a></li>
+						<li class="nav-item"><a href="#credit" class="nav-link"
+							data-bs-toggle="tab"><h4>Credit an account</h4></a></li>
+						<li class="nav-item"><a href="#debit" class="nav-link"
+							data-bs-toggle="tab"><h4>Debit an account</h4></a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade show active" id="send">
+							<div class="card ">
+								<form method="post" th:action="@{/transaction/friend/new}">
+									<div class="card-body border border-dark">
+										<div class="row mb-3">
+											<div class="col-m-3"></div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-6">
+												<h6 class="mb-1">friend</h6>
+											</div>
+											<div class="col-sm-12">
+												<select class="form-select" aria-label="select a friend"
+													name="friendEmail">
+													<option value="">select a friend:</option>
+													<option th:each="friend : ${friends}"
+														th:value="${friend.getEmail()}"
+														th:text="${friend.getFullName()} + ' (' + ${friend.getEmail()} + ')'"></option>
+												</select>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-6">
+												<h6 class="mb-1">Label</h6>
+											</div>
+											<div class="col-sm-12 text-secondary">
+												<input class="form-control" name="description" required
+													type="text">
+											</div>
+										</div>
+										<div th:if="${param.error_send_to_friend}">
+											<p class="text-danger"
+												th:text="${param.error_send_to_friend}"></p>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-6">
+												<h6 class="mb-1">Amount</h6>
+											</div>
+
+											<div class="input-group">
+												<input name="amount" type="text" class="form-control"
+													required>
+												<div class="input-group-append">
+													<span class="input-group-text">€</span>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-3"></div>
+											<div class="text-secondary">
+												<input class="btn btn-success px-4" type="submit"
+													value="Send">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="credit">
+							<div class="row">
+								<div class="col-m-12">
+									<div class="card ">
+										<form method="post" th:action="@{/transaction/credit}">
+											<div class="card-body border border-dark">
+												<div class="row mb-3">
+													<div class="col-m-3"></div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm-6">
+														<h6 class="mb-1">Bank account</h6>
+													</div>
+													<div class="mb-3">
+														<select class="form-select" aria-label="select an account"
+															name="iban">
+															<option value="">select an account:</option>
+															<option th:each="account : ${accounts}"
+																th:value="${account.getIban()}"
+																th:text=" ${account.getIban()}"></option>
+														</select>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm-6">
+														<h6 class="mb-1">Amount</h6>
+													</div>
+													<div th:if="${param.error_new_external_transaction}">
+														<p class="text-danger"
+															th:text="${param.error_new_external_transaction}"></p>
+													</div>
+
+													<div class="input-group">
+														<input name="amount" type="text" class="form-control"
+															required>
+														<div class="input-group-append">
+															<span class="input-group-text">€</span>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-3"></div>
+														<div class="text-secondary">
+															<input class="btn btn-success px-4" type="submit"
+																value="Credit">
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="debit">
+							<div class="row">
+								<div class="col-m-12">
+									<div class="card ">
+										<form method="post" th:action="@{/transaction/debit}">
+											<div class="card-body border border-dark">
+												<div class="row mb-3">
+													<div class="col-m-3"></div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm-6">
+														<h6 class="mb-1">Bank account</h6>
+													</div>
+													<div class="mb-3">
+														<select class="form-select" aria-label="select an account"
+															name="iban">
+															<option value="">select an account:</option>
+															<option th:each="account : ${accounts}"
+																th:value="${account.getIban()}"
+																th:text=" ${account.getIban()}"></option>
+														</select>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-sm-6">
+														<h6 class="mb-1">Amount</h6>
+													</div>
+													<div th:if="${param.error_new_external_transaction}">
+														<p class="text-danger"
+															th:text="${param.error_new_external_transaction}"></p>
+													</div>
+
+													<div class="input-group">
+														<input name="amount" type="text" class="form-control"
+															required>
+														<div class="input-group-append">
+															<span class="input-group-text">€</span>
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-3"></div>
+														<div class="text-secondary">
+															<input class="btn btn-success px-4" type="submit"
+																value="Debit">
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="card mt-4">
-					<div class="card-body">
+					<div class="card-body border border-dark">
 						<div class="row mb-3">
 							<div class="col-m-3">
 								<h3>List of transactions</h3>
 							</div>
 						</div>
-
 						<table class="table">
-							<thead>
+							<thead class="col bg-success">
 								<tr>
 									<th scope="col">Date</th>
 									<th scope="col">Description</th>
@@ -51,19 +258,64 @@
 								<tr th:each="transaction : ${transactions}">
 									<td th:text="${transaction.getDate()}"></td>
 									<td th:text="${transaction.getDescription()}"></td>
-									<td th:text="${transaction.getAmount()}"></td>
+									<td th:text="${transaction.getAmount()} +'€'"></td>
 
 									<td th:text="${transaction.getSender().getFullName()}"></td>
 									<td th:text="${transaction.getReceiver().getFullName()}"></td>
 								</tr>
-								
 							</tbody>
 						</table>
 					</div>
 				</div>
+
+
+				<div class="card mt-4">
+					<div class="card-body border border-dark">
+						<div class="row mb-3">
+							<div class="col-m-3">
+								<h3>List of Bank Transactions</h3>
+							</div>
+						</div>
+						<table class="table">
+							<thead class="col bg-success">
+								<tr>
+									<th scope="col">Amount</th>
+									<th scope="col">Bank Transactions</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="account : ${accounts}">
+									<td th:text="${account.getIban()}"></td>
+									<td>
+										<table class="table">
+											<thead class="col bg-info">
+												<tr>
+													<th scope="col">Date</th>
+													<th scope="col">Amount</th>
+													<th scope="col">Type</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr th:each="transaction : ${account.getBankTransactions()}">
+													<td th:text="${transaction.getDate()}"></td>
+
+													<td th:text="${transaction.getAmount()} +'€'"></td>
+
+													<td th:text="${transaction.getType()}"></td>
+
+												</tr>
+											</tbody>
+										</table>
+									</td>
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>
