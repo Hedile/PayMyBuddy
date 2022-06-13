@@ -1,10 +1,15 @@
 package com.openclassrooms.paymybuddy.service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.paymybuddy.constants.TransactionType;
@@ -12,6 +17,7 @@ import com.openclassrooms.paymybuddy.exceptions.InsufficientBalanceException;
 import com.openclassrooms.paymybuddy.exceptions.NegativeTransactionAmountException;
 import com.openclassrooms.paymybuddy.model.BankAccount;
 import com.openclassrooms.paymybuddy.model.BankTransaction;
+import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.repository.BankTransactionRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
@@ -45,7 +51,7 @@ public class BankTransactionService {
 		BankTransaction savedBankTransaction = bankTransactionRepository.save(bankTransaction);
 		return savedBankTransaction;
 	}
-
+	
 	public void CreditInternalAccount(String iban, double amount, User user)
 			throws NegativeTransactionAmountException {
 		BankAccount currentAccount = new BankAccount();

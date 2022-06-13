@@ -69,7 +69,7 @@
 								</div>
 							</div>
 							<table class="table">
-								<thead>
+								<thead class="col bg-success">
 									<tr>
 										<th scope="col">Full name</th>
 										<th scope="col">Email</th>
@@ -83,6 +83,14 @@
 									</tr>
 								</tbody>
 							</table>
+							<ul th:if="${totalPages > 0}"
+							class="pagination   pagination-lg d-flex justify-content-center ">
+							<li th:each="pageNumber : ${pageNumbers}"><a
+								th:href="@{/(size=${friendPage.size}, page=${pageNumber})}"
+								th:text=${pageNumber}
+								th:class=" ${pageNumber==friendPage.number + 1 ? 'btn btn-info ms-1':'btn btn-outline-info ms-1'}"></a>
+							</li>
+						</ul>
 						</div>
 					</div>
 				</div>

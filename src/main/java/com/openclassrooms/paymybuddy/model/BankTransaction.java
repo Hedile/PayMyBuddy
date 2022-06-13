@@ -27,7 +27,7 @@ public class BankTransaction {
     private double amount;
 
     @Column(nullable = false)
-    private LocalDateTime Date;
+    private LocalDateTime date;
  
     @Column(name = "type")
     private TransactionType type;
@@ -69,11 +69,11 @@ public class BankTransaction {
 	
 
 	public LocalDateTime getDate() {
-		return Date;
+		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
-		Date = date;
+	public void setDate(LocalDateTime d) {
+		date = d;
 	}
 
 	public TransactionType getType() {

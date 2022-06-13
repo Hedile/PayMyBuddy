@@ -82,14 +82,20 @@
 											<div class="col-sm-6">
 												<h6 class="mb-1">friend</h6>
 											</div>
-											<div class="col-sm-12">
-												<select class="form-select" aria-label="select a friend"
-													name="friendEmail">
-													<option value="">select a friend:</option>
-													<option th:each="friend : ${friends}"
-														th:value="${friend.getEmail()}"
-														th:text="${friend.getFullName()} + ' (' + ${friend.getEmail()} + ')'"></option>
-												</select>
+											<div class="row">
+												<div class="col">
+													<select class="form-select" aria-label="select a friend"
+														name="friendEmail">
+														<option value="">select a friend:</option>
+														<option th:each="friend : ${friends}"
+															th:value="${friend.getEmail()}"
+															th:text="${friend.getFullName()} + ' (' + ${friend.getEmail()} + ')'"></option>
+													</select>
+												</div>
+												<div class="col">
+												 <a th:href="@{/contact}" class="btn btn-info btn-lg btn-block">Add Friend</a>
+													
+												</div>
 											</div>
 										</div>
 										<div class="row mb-3">
@@ -241,7 +247,7 @@
 					<div class="card-body border border-dark">
 						<div class="row mb-3">
 							<div class="col-m-3">
-								<h3>List of transactions</h3>
+								<h3>List of transactions with friends</h3>
 							</div>
 						</div>
 						<table class="table">
@@ -255,7 +261,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="transaction : ${transactions}">
+								<tr th:each="transaction : ${transactionList}">
 									<td th:text="${transaction.getDate()}"></td>
 									<td th:text="${transaction.getDescription()}"></td>
 									<td th:text="${transaction.getAmount()} +'€'"></td>
@@ -265,10 +271,17 @@
 								</tr>
 							</tbody>
 						</table>
+						<ul th:if="${totalPages > 0}"
+							class="pagination   pagination-lg d-flex justify-content-center ">
+							<li th:each="pageNumber : ${pageNumbers}"><a
+								th:href="@{/transaction(size=${transactionPage.size}, page=${pageNumber})}"
+								th:text=${pageNumber}
+								th:class=" ${pageNumber==transactionPage.number + 1 ? 'btn btn-info ms-1':'btn btn-outline-info ms-1'}"></a>
+							</li>
+						</ul>
+
 					</div>
 				</div>
-
-
 				<div class="card mt-4">
 					<div class="card-body border border-dark">
 						<div class="row mb-3">
@@ -279,7 +292,7 @@
 						<table class="table">
 							<thead class="col bg-success">
 								<tr>
-									<th scope="col">Amount</th>
+									<th scope="col">Account</th>
 									<th scope="col">Bank Transactions</th>
 								</tr>
 							</thead>
@@ -298,22 +311,18 @@
 											<tbody>
 												<tr th:each="transaction : ${account.getBankTransactions()}">
 													<td th:text="${transaction.getDate()}"></td>
-
 													<td th:text="${transaction.getAmount()} +'€'"></td>
-
 													<td th:text="${transaction.getType()}"></td>
-
 												</tr>
 											</tbody>
 										</table>
 									</td>
-
 								</tr>
 							</tbody>
 						</table>
+							
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

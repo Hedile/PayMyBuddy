@@ -47,7 +47,11 @@ public class User {
 	@Column(nullable = false, name = "solde")
 	private double balance;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER , cascade = { 
+					CascadeType.PERSIST, 
+					CascadeType.MERGE 
+					} )
+                                      
 	@JoinTable(name = "connection", joinColumns = {
 			@JoinColumn(name = "user_sender_id", referencedColumnName = "user_id", nullable = false) }, 
 			inverseJoinColumns = {
@@ -57,11 +61,16 @@ public class User {
 	@OneToMany(mappedBy = "accountUser", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BankAccount> accounts = new ArrayList<>();
 
-	@OneToMany(mappedBy = "sender" ,cascade = CascadeType.ALL)
-	
+	@OneToMany(mappedBy = "sender" ,cascade = { 
+			CascadeType.PERSIST, 
+			CascadeType.MERGE 
+			} )
 	private List<Transaction> sentTransactions = new ArrayList<>();
 
-	@OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "receiver", cascade = { 
+			CascadeType.PERSIST, 
+			CascadeType.MERGE 
+			} )
 	private List<Transaction> receiveTransactions = new ArrayList<>();
 
 	

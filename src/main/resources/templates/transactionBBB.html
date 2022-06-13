@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+	name="viewport">
+<title>Transaction - PayMyBuddy</title>
+<link rel="stylesheet" href="../static/css/bootstrap.min.css"
+	th:href="@{css/bootstrap.min.css}" type="text/css">
+<link href="/css/app.css" rel="stylesheet" type="text/css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+	crossorigin="anonymous"></script>
+
+</head>
+<body>
+	<header class="container-fluid header">
+		<div class="container">
+			<div class="logo">PayMyBuddy</div>
+			<nav class="menu">
+				<a th:href="@{/}"> Home</a> <a class="active"
+					th:href="@{/transaction}">Transfer</a> <a th:href="@{/profile}">Profile</a>
+				<a th:href="@{/contact}">Contact</a> <a th:href="@{/logout}">Log
+					off</a>
+			</nav>
+		</div>
+	</header>
+
+	<div class="card mt-4">
+		<div class="card-body border border-dark">
+			<div class="row mb-3">
+				<div class="col-m-3">
+					<h3>List of transactions</h3>
+				</div>
+			</div>
+			<table class="table">
+				<thead class="col bg-success">
+					<tr>
+						<th scope="col">Date</th>
+						<th scope="col">Description</th>
+						<th scope="col">Amount</th>
+						<th scope="col">Sender</th>
+						<th scope="col">Receiver</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="transaction: ${transactionList}">
+						<td th:text="${transaction.getDate()}"></td>
+						<td th:text="${transaction.getDescription()}"></td>
+						<td th:text="${transaction.getAmount()} +'€'"></td>
+
+						<td th:text="${transaction.getSender().getFullName()}"></td>
+						<td th:text="${transaction.getReceiver().getFullName()}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<ul th:if="${totalPages > 0}"
+				 class="pagination   pagination-lg d-flex justify-content-center ">
+			<li	th:each="pageNumber : ${pageNumbers}">
+				<a  
+					th:href="@{/transaction(size=${transactionPage.size}, page=${pageNumber})}"
+					th:text=${pageNumber}
+					th:class=" ${pageNumber==transactionPage.number + 1 ? 'btn btn-info ms-1':'btn btn-outline-info ms-1'}"></a>
+					</li>
+			</ul >
+			
+		</div>
+	</div>
+</body>
+</html>

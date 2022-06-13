@@ -2,8 +2,7 @@ package com.openclassrooms.paymybuddy.model;
 
 import java.time.LocalDateTime;
 
-
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,8 +27,8 @@ public class Transaction {
 	@Column(name = "transaction_id")
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name="user_sender_id" )
+    @ManyToOne 
+    @JoinColumn(name="user_sender_id")
     private User sender;
 
     @ManyToOne
@@ -44,7 +43,7 @@ public class Transaction {
     
   
     @Column(nullable = false)
-    private LocalDateTime Date;
+    private LocalDateTime date;
 
     @Column(name = "type")
     private TransactionType type;
@@ -91,11 +90,11 @@ public class Transaction {
 	
 
 	public LocalDateTime getDate() {
-		return Date;
+		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
-		Date = date;
+	public void setDate(LocalDateTime d) {
+		date = d;
 	}
 
 	public TransactionType getType() {
