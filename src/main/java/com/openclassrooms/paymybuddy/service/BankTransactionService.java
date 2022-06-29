@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.openclassrooms.paymybuddy.constants.TransactionType;
+import com.openclassrooms.paymybuddy.exceptions.AmountFormatException;
 import com.openclassrooms.paymybuddy.exceptions.InsufficientBalanceException;
 import com.openclassrooms.paymybuddy.exceptions.NegativeTransactionAmountException;
 import com.openclassrooms.paymybuddy.model.BankAccount;
@@ -51,9 +52,20 @@ public class BankTransactionService {
 		BankTransaction savedBankTransaction = bankTransactionRepository.save(bankTransaction);
 		return savedBankTransaction;
 	}
-	
-	public void CreditInternalAccount(String iban, double amount, User user)
-			throws NegativeTransactionAmountException {
+	 public static boolean isNumeric(String strNum) {
+	        if (strNum == null) {
+	            return false;
+	        }
+	        try {
+	            double d = Double.parseDouble(strNum);
+	        } catch (NumberFormatException nfe) {
+	            return false;
+	        }
+	        return true;
+	    }
+	 
+	public void CreditInternalAccount(String iban, String amount, User user)
+			throws NegativeTransactionAmountException, AmountFormatException {
 		BankAccount currentAccount = new BankAccount();
 		List<BankAccount> accounts = user.getAccounts();
 		for (BankAccount account : accounts) {
@@ -61,8 +73,12 @@ public class BankTransactionService {
 				currentAccount = account;
 			}
 		}
+		 if (!isNumeric(amount)){
+	            throw new AmountFormatException("The amount must be a number.");
+	        }
 
-		if (amount <= 0) {
+	        double montant = Double.parseDouble(amount);
+		if (montant <= 0) {
 			throw new NegativeTransactionAmountException("The amount cannot be negative or equals to 0.");
 		}
 
@@ -70,15 +86,15 @@ public class BankTransactionService {
 		bankTransaction.setDate(LocalDateTime.now());
 		bankTransaction.setAccount(currentAccount);
 		bankTransaction.setType(TransactionType.CREDIT_INTERNAL_ACCOUNT);
-		bankTransaction.setAmount(amount);
+		bankTransaction.setAmount(montant);
 		bankTransactionRepository.save(bankTransaction);
 
 		user.setBalance(user.getBalance() + bankTransaction.getAmount() * 0.995);
 		userRepository.save(user);
 	}
 
-	public void DebitInternalAccount(String iban, double amount, User user)
-			throws NegativeTransactionAmountException, InsufficientBalanceException {
+	public void DebitInternalAccount(String iban, String amount, User user)
+			throws NegativeTransactionAmountException, InsufficientBalanceException, AmountFormatException {
 		BankAccount currentAccount = new BankAccount();
 		List<BankAccount> accounts = user.getAccounts();
 		for (BankAccount account : accounts) {
@@ -86,11 +102,16 @@ public class BankTransactionService {
 				currentAccount = account;
 			}
 		}
-		if (amount <= 0) {
+		 if (!isNumeric(amount)){
+	            throw new AmountFormatException("The amount must be a number.");
+	        }
+
+	        double montant = Double.parseDouble(amount);
+		if (montant <= 0) {
 			throw new NegativeTransactionAmountException("The amount cannot be negative or equals to 0.");
 		}
 
-		if (HelperService.computeTransactionAmountWithFee(user, amount) < 0) {
+		if (HelperService.computeTransactionAmountWithFee(user, montant) < 0) {
 			throw new InsufficientBalanceException("the account balance is insufficient: " + user.getBalance());
 		}
 
@@ -98,10 +119,10 @@ public class BankTransactionService {
 		bankTransaction.setDate(LocalDateTime.now());
 		bankTransaction.setAccount(currentAccount);
 		bankTransaction.setType(TransactionType.DEBIT_INTERNAL_ACCOUNT);
-		bankTransaction.setAmount(amount);
+		bankTransaction.setAmount(montant);
 		bankTransactionRepository.save(bankTransaction);
 
-		user.setBalance(HelperService.computeTransactionAmountWithFee(user, amount));
+		user.setBalance(HelperService.computeTransactionAmountWithFee(user, montant));
 		userRepository.save(user);
 	}
 }

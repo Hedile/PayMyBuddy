@@ -23,7 +23,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
-@DynamicUpdate
+@DynamicUpdate 
 @Entity
 @Table(name = "user")
 public class User {
@@ -48,6 +48,7 @@ public class User {
 	private double balance;
 	
 	@ManyToMany(fetch = FetchType.EAGER , cascade = { 
+		
 					CascadeType.PERSIST, 
 					CascadeType.MERGE 
 					} )

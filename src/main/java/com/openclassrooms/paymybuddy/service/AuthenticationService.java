@@ -60,9 +60,7 @@ public class AuthenticationService {
 	    public User getCurrentLoggedUser(HttpServletRequest request) {
 	    	HttpSession httpSession= request.getSession();
 	    	SecurityContext securityContext=(SecurityContext) httpSession.getAttribute("SPRING_SECURITY_CONTEXT");
-	    	 System.out.println(securityContext);
 	    	String email=securityContext.getAuthentication().getName();
-	    	 System.out.println("Email: " + email);
 	        return userRepository.findUserByEmail(email);
 	    }
 	  

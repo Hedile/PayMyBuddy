@@ -27,14 +27,16 @@ public class BankAccount {
 	private String iban;
 	
 	 @OneToMany(mappedBy="account",
-  		   cascade = CascadeType.ALL, 
+			 cascade = { 
+						CascadeType.PERSIST, 
+						CascadeType.MERGE 
+						} , 
   		   orphanRemoval = true
   		   )
   		   
 	private List<BankTransaction> bankTransactions = new ArrayList<>();
 	 
-	@ManyToOne(fetch = FetchType.EAGER,
-			cascade = { 
+	@ManyToOne(cascade = { 
 					CascadeType.PERSIST, 
 					CascadeType.MERGE 
 					} 

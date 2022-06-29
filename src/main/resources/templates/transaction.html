@@ -23,7 +23,7 @@
 			<nav class="menu">
 				<a th:href="@{/}"> Home</a> <a class="active"
 					th:href="@{/transaction}">Transfer</a> <a th:href="@{/profile}">Profile</a>
-				<a th:href="@{/contact}">Contact</a> <a th:href="@{/logout}">Log
+				<a th:href="@{/contact}">Contacts</a> <a th:href="@{/logout}">Log
 					off</a>
 			</nav>
 		</div>
@@ -78,6 +78,7 @@
 										<div class="row mb-3">
 											<div class="col-m-3"></div>
 										</div>
+										
 										<div class="row mb-3">
 											<div class="col-sm-6">
 												<h6 class="mb-1">friend</h6>
@@ -85,7 +86,7 @@
 											<div class="row">
 												<div class="col">
 													<select class="form-select" aria-label="select a friend"
-														name="friendEmail">
+														name="friendEmail" required>
 														<option value="">select a friend:</option>
 														<option th:each="friend : ${friends}"
 															th:value="${friend.getEmail()}"
@@ -93,8 +94,9 @@
 													</select>
 												</div>
 												<div class="col">
-												 <a th:href="@{/contact}" class="btn btn-info btn-lg btn-block">Add Friend</a>
-													
+													<a th:href="@{/contact}"
+														class="btn btn-info btn-lg btn-block">Add Friend</a>
+
 												</div>
 											</div>
 										</div>
@@ -124,6 +126,7 @@
 												</div>
 											</div>
 										</div>
+				
 										<div class="row">
 											<div class="col-sm-3"></div>
 											<div class="text-secondary">
@@ -150,7 +153,7 @@
 													</div>
 													<div class="mb-3">
 														<select class="form-select" aria-label="select an account"
-															name="iban">
+															name="iban" required>
 															<option value="">select an account:</option>
 															<option th:each="account : ${accounts}"
 																th:value="${account.getIban()}"
@@ -203,7 +206,7 @@
 													</div>
 													<div class="mb-3">
 														<select class="form-select" aria-label="select an account"
-															name="iban">
+															name="iban" required>
 															<option value="">select an account:</option>
 															<option th:each="account : ${accounts}"
 																th:value="${account.getIban()}"
@@ -247,7 +250,7 @@
 					<div class="card-body border border-dark">
 						<div class="row mb-3">
 							<div class="col-m-3">
-								<h3>List of transactions with friends</h3>
+								<h3>List of Transactions with friends</h3>
 							</div>
 						</div>
 						<table class="table">
@@ -320,7 +323,7 @@
 								</tr>
 							</tbody>
 						</table>
-							
+
 					</div>
 				</div>
 			</div>

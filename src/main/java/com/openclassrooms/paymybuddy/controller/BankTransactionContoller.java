@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.openclassrooms.paymybuddy.exceptions.AmountFormatException;
 import com.openclassrooms.paymybuddy.exceptions.InsufficientBalanceException;
 import com.openclassrooms.paymybuddy.exceptions.NegativeTransactionAmountException;
 import com.openclassrooms.paymybuddy.model.BankAccount;
@@ -31,13 +32,13 @@ public class BankTransactionContoller {
 	
 	@PostMapping("/transaction/credit")
 	public String addMoneyToInternalAccount(@RequestParam(name = "iban")String iban,
-			@RequestParam(name = "amount") double amount,
+			@RequestParam(name = "amount") String amount,
 			HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		User user = authenticationService.getCurrentLoggedUser(request);
 		
 		try {
 			bankTransactionService.CreditInternalAccount(iban, amount, user);
-		} catch (NegativeTransactionAmountException e) {
+		} catch (NegativeTransactionAmountException |  AmountFormatException  e) {
 			redirectAttributes.addAttribute("error_new_external_transaction", e.getMessage());
 		}
 
@@ -46,13 +47,13 @@ public class BankTransactionContoller {
 	
 	@PostMapping("/transaction/debit")
 	public String debitMoneyToInternalAccount(@RequestParam(name = "iban")String iban,
-			@RequestParam(name = "amount") double amount,
+			@RequestParam(name = "amount") String amount,
 			HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		User user = authenticationService.getCurrentLoggedUser(request);
 		
 		try {
 			bankTransactionService.DebitInternalAccount(iban, amount, user);
-		} catch (NegativeTransactionAmountException|InsufficientBalanceException e) {
+		} catch (NegativeTransactionAmountException|InsufficientBalanceException |  AmountFormatException e) {
 			redirectAttributes.addAttribute("error_new_external_transaction", e.getMessage());
 		}
 

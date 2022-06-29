@@ -12,47 +12,33 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	 @Autowired
-	    private DataSource dataSource;
-	
-	  @Override
-	    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-	        auth.jdbcAuthentication().dataSource(dataSource)
-	       
-	                .usersByUsernameQuery("select email, password, true from user where email = ?;") //SQL query
-	                .authoritiesByUsernameQuery("select email, password from user where email = ?;"); //SQL query
-	    }
-	  
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-@Override
- protected void configure(HttpSecurity http) throws Exception {
-	        http.
-	        authorizeRequests()
-	   .antMatchers("/register","/user/register").permitAll()
-         
-	                .antMatchers("/css/**","/img/**").permitAll()
-	                .anyRequest().authenticated()
-	                .and()
-	                .formLogin()
-	                .loginPage("/login") .permitAll()
-	                .defaultSuccessUrl("/")
-	                .failureUrl("/login?failure=true")
-	                .usernameParameter("email")
-	                .permitAll()
-	                .and().rememberMe();
-	    }
- 
+	@Autowired
+	private DataSource dataSource;
 
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.jdbcAuthentication().dataSource(dataSource)
 
-@Bean
-		public PasswordEncoder passwordEncoder() {
-		 return new BCryptPasswordEncoder();
-		
-		}
+				.usersByUsernameQuery("select email, password, true from user where email = ?;") // SQL query
+				.authoritiesByUsernameQuery("select email, password from user where email = ?;"); // SQL query
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/register", "/user/register").permitAll()
+
+				.antMatchers("/css/**", "/img/**").permitAll().anyRequest().authenticated().and().formLogin()
+				.loginPage("/login").permitAll().defaultSuccessUrl("/").failureUrl("/login?failure=true")
+				.usernameParameter("email").permitAll().and().rememberMe();
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+
+	}
 }

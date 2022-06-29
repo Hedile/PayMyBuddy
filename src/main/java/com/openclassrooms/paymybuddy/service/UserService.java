@@ -49,11 +49,8 @@ public class UserService {
     }
     public Page<User> findPaginatedFriends(Pageable pageable, User user) {
         int pageSize = pageable.getPageSize();
-        System.out.println(pageSize);
         int currentPage = pageable.getPageNumber();
-        System.out.println(currentPage);
         int startItem = currentPage * pageSize;
-        System.out.println(startItem);
         List<User> list;
         List<User> friends=user.getFriends();
         if (friends.size() < startItem) {
@@ -70,19 +67,20 @@ public class UserService {
     }
     public void addFriend(String email, User user) throws UserNotFoundException, FriendAlreadyLinkedException{
         User newFriend = userRepository.findUserByEmail(email);
-        User currentUser=userRepository.findUserByEmail(user.getEmail());
+        //User currentUser=userRepository.findUserByEmail(user.getEmail());
         if (newFriend == null){
             throw new UserNotFoundException("User not found with email: " + email);
         }
-        List<User> friends= currentUser.getFriends();
+        List<User> friends= user.getFriends();
         for(User freind : friends) {
         	if( freind.getEmail().equals(email)){
                 throw new FriendAlreadyLinkedException("Friend already linked with email: " +email);
             }
         }
         friends.add(newFriend);
-       currentUser.setFriends(friends);
-       userRepository.save(currentUser);
+      user.setFriends(friends);
+       userRepository.save(user);
+    
     
     }
     

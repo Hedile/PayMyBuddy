@@ -50,7 +50,7 @@ public class UserController {
 			Page<User> friendPage = service.findPaginatedFriends(pageable, user);
 			List<User> friendList = friendPage.getContent();
 			int totalPages = friendPage.getTotalPages();
-			System.out.println(friendPage.getSize());
+			
 			if (totalPages > 0) {
 				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 				model.addAttribute("pageNumbers", pageNumbers);
@@ -81,7 +81,7 @@ public class UserController {
 			Page<User> friendPage = service.findPaginatedFriends(pageable, user);
 			List<User> friendList = friendPage.getContent();
 			int totalPages = friendPage.getTotalPages();
-			System.out.println(friendPage.getSize());
+			
 			if (totalPages > 0) {
 				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 				model.addAttribute("pageNumbers", pageNumbers);
@@ -99,6 +99,7 @@ public class UserController {
 	      
 	        try {
 	            service.addFriend(email, user);
+	            
 	        } catch (UserNotFoundException  e) {
 	            redirectAttributes.addAttribute("error", e.getMessage());
 	        }  catch (FriendAlreadyLinkedException e) {
@@ -107,79 +108,8 @@ public class UserController {
 	        return"redirect:/contact";
 	    }
 	  
-/*@GetMapping("/essai")
-	public String getUsers(Model model) {
-	    Iterable<User> listUser = service.getUsers();
-	    model.addAttribute("users", listUser);
-	    return "essai";
-	}
-	
-	
-	
-	 @GetMapping("/createUser")
-		public String createUser(Model model) {
-			User u = new User();
-			model.addAttribute("user", u);
-			return "formNewUser";
-		}
-	
-	 @GetMapping("/deleteUser/{id}")
-	 public ModelAndView deleteEmployee(@PathVariable("id") final int id) {
-		service.deleteUserById(id);
-	     return new ModelAndView("redirect:/");
-	 }
-	 @PostMapping("/saveEmployee")
-	 public ModelAndView saveEmployee(@ModelAttribute User u) {
-	    service.saveUser(u);
-	     return new ModelAndView("redirect:/");
-	 }
-	 /***
 
-	
-	/* @GetMapping("/home")
-		public String home(Model model) {
-			Iterable<User> listUser = service.getUsers();
-			model.addAttribute("users", listUser);
-			return "home";
-		}
-		
-		@GetMapping("/createUser")
-		public String createUser(Model model) {
-			User u = new User();
-			model.addAttribute("user", u);
-			return "formNewUser";
-		}
-		
-		@GetMapping("/updateUser/{userId}")
-		public String updateUser(@PathVariable("userId") final int id, Model model) {
-			Optional<User> u = service.getUserById(id);		
-			model.addAttribute("user", u);	
-			return "formUpdateUser";		
-		}
-		
-		@GetMapping("/deleteUser/{userId}")
-		public ModelAndView deleteEmployee(@PathVariable("userId") final int id) {
-			service.deleteUserById(id);
-			return new ModelAndView("redirect:/");		
-		}
-		
-		@PostMapping("/saveEmployee")
-		public ModelAndView saveUser(@ModelAttribute User u) {
-			if(u.getEmail() != null) {
-				// Employee from update form has the password field not filled,
-				// so we fill it with the current password.
-				User current = service.getUserByEmail(u.getEmail());
-				
-				u.setPassword(current.getPassword());
-			}
-			service.saveUser(u);
-			return new ModelAndView("redirect:/");	
-		}
-		*/
-	    
 	  
-
-
 		  
 
 }

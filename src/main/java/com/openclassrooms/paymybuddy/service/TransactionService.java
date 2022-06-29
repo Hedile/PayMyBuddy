@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.paymybuddy.constants.Fees;
 import com.openclassrooms.paymybuddy.constants.TransactionType;
+import com.openclassrooms.paymybuddy.exceptions.AmountFormatException;
 import com.openclassrooms.paymybuddy.exceptions.InsufficientBalanceException;
 import com.openclassrooms.paymybuddy.exceptions.NegativeTransactionAmountException;
+
 import com.openclassrooms.paymybuddy.model.Transaction;
 import com.openclassrooms.paymybuddy.model.User;
 import com.openclassrooms.paymybuddy.repository.TransactionRepository;
@@ -55,11 +57,11 @@ public class TransactionService {
 
     public Page<Transaction> findPaginatedTransaction(Pageable pageable, User user) {
         int pageSize = pageable.getPageSize();
-        System.out.println(pageSize);
+   
         int currentPage = pageable.getPageNumber();
-        System.out.println(currentPage);
+      
         int startItem = currentPage * pageSize;
-        System.out.println(startItem);
+       
         List<Transaction> list;
         List<Transaction> transactions=transactionRepository.findTransactionsByUser(user.getUserId());;
         if (transactions.size() < startItem) {
@@ -74,38 +76,53 @@ public class TransactionService {
 
         return transactionPage;
     }
-	
-	public void sendToFriend(String email, User user, double amount, String description)
-			throws NegativeTransactionAmountException, InsufficientBalanceException {
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+	public void sendToFriend(String email, User user, String amount, String description)
+			throws NegativeTransactionAmountException, InsufficientBalanceException, AmountFormatException {
 		User userFriend = new User();
+	
 		List<User> friends = user.getFriends();
 		for (User friend : friends) {
 			if (friend.getEmail().equals(email)) {
 				userFriend = friend;
 			}
 		}
-		
-		if (amount <= 0) {
+	
+		 if (!isNumeric(amount)){
+	            throw new AmountFormatException("The amount must be a number.");
+	        }
+
+	        double montant = Double.parseDouble(amount);
+	        	
+		if (montant <= 0) {
 			throw new NegativeTransactionAmountException("The amount cannot be negative or equals to 0.");
 		}
 
-		if (HelperService.computeTransactionAmountWithFee(user, amount) < 0) {
+		if (HelperService.computeTransactionAmountWithFee(user, montant) < 0) {
 			throw new InsufficientBalanceException("the account balance is insufficient: " + user.getBalance());
 		}
-
-		
 
 		Transaction transaction = new Transaction();
 		transaction.setDescription(description);
 		transaction.setDate(LocalDateTime.now());
 		transaction.setType(TransactionType.SEND_TO_FRIEND);
-		transaction.setAmount(amount);
+		transaction.setAmount(montant);
 		transaction.setReceiver(userFriend);
 		transaction.setSender(user);
 
-		user.setBalance(HelperService.computeTransactionAmountWithFee(user, amount));
+		user.setBalance(HelperService.computeTransactionAmountWithFee(user, montant));
 		userRepository.save(user);
-		userFriend.setBalance(userFriend.getBalance() + amount);
+		userFriend.setBalance(userFriend.getBalance() + montant);
 		userRepository.save(userFriend);
 		transactionRepository.save(transaction);
 	}
